@@ -51,7 +51,32 @@ line.init({
     accessToken: 'YvxY4DWjIekWDwr5VBIlkjCYecAV5F6JZmUxCgnDA1an2QlEAENe5E3EV9R+EdJpmaKTY0v2uILRv3WvkhdRBPoYMRJnYpRbBn284lJawJDD384dvmyl6phkyXAnsoa5g8Ru+XDxLMkRXtzxVYB29gdB04t89/1O/w1cDnyilFU=',
     // (Optional) for webhook signature validation
     channelSecret: '1d360dcb6469254599ab19c5372e7f94'
-})
+});
+
+
+
+const imageTest = (event) => {
+
+    line.client.replyMessage({
+        replyToken: event.replyToken,
+        messages: [{
+            type: 'text',
+            text: 'image: ' + JSON.stringify(event);
+        }]
+    });
+    /*
+        line.client
+            .getMessageContent('xxxxxxxxxx' /* messageId  )
+            .then((content) => {
+                // handle content
+            })
+
+    */
+};
+
+
+
+
 
 app.post('/webhook/', line.validator.validateSignature(), async(req, res, next) => {
 
@@ -59,6 +84,9 @@ app.post('/webhook/', line.validator.validateSignature(), async(req, res, next) 
     if (!mainSocket) return res.json({ success: true });
 
     for (const event of req.body.events) {
+
+        if (event.message.type === 'image') imageTest(event);
+
 
         if (event.message.type !== 'text') continue;
 
