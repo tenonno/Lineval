@@ -74,20 +74,26 @@ _nodeLineBotApi2.default.init({
 
 var imageTest = function () {
     var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(event, res) {
+        var content;
         return _regenerator2.default.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
                         _context.next = 2;
+                        return _nodeLineBotApi2.default.client.getMessageContent(event.message.id);
+
+                    case 2:
+                        content = _context.sent;
+                        _context.next = 5;
                         return _nodeLineBotApi2.default.client.replyMessage({
                             replyToken: event.replyToken,
                             messages: [{
                                 type: 'text',
-                                text: 'image: ' + (0, _stringify2.default)(event)
+                                text: 'image: ' + (0, _stringify2.default)(content)
                             }]
                         });
 
-                    case 2:
+                    case 5:
 
                         res.json({ success: true });
 
@@ -99,7 +105,7 @@ var imageTest = function () {
                                 })
                           */
 
-                    case 3:
+                    case 6:
                     case 'end':
                         return _context.stop();
                 }

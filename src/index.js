@@ -55,15 +55,24 @@ line.init({
 
 
 
-const imageTest = (event) => {
+const imageTest = async(event, res) => {
 
-    line.client.replyMessage({
+
+
+    const content = await line.client.getMessageContent(event.message.id);
+
+
+    await line.client.replyMessage({
         replyToken: event.replyToken,
         messages: [{
             type: 'text',
-            text: 'image: ' + JSON.stringify(event);
+            text: 'image: ' + JSON.stringify(content)
         }]
     });
+
+
+    res.json({ success: true });
+
     /*
         line.client
             .getMessageContent('xxxxxxxxxx' /* messageId  )
@@ -85,7 +94,7 @@ app.post('/webhook/', line.validator.validateSignature(), async(req, res, next) 
 
     for (const event of req.body.events) {
 
-        if (event.message.type === 'image') imageTest(event);
+        if (event.message.type === 'image') return imageTest(event, res);
 
 
         if (event.message.type !== 'text') continue;
