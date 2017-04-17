@@ -26,6 +26,10 @@ var bodyParser = require('body-parser');
 
 var app = (0, _express2.default)();
 
+var io = require('socket.io')(app);
+
+console.log(io);
+
 // need raw buffer for signature validation
 app.use(bodyParser.json({
     verify: function verify(req, res, buf) {

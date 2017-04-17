@@ -9,7 +9,9 @@ import line from 'node-line-bot-api';
 const app = express();
 
 
+var io = require('socket.io')(app);
 
+console.log(io);
 
 
 // need raw buffer for signature validation
