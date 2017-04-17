@@ -24,10 +24,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var bodyParser = require('body-parser');
 
+var app = (0, _express2.default)();
+
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-
-var app = (0, _express2.default)();
 
 server.listen(80);
 

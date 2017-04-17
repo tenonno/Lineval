@@ -5,10 +5,11 @@ const bodyParser = require('body-parser')
 import express from 'express';
 import line from 'node-line-bot-api';
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
 const app = express();
+
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
 
 
 server.listen(80);
