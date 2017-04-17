@@ -23,7 +23,16 @@ app.use(bodyParser.json({
 
 
 
-io.on('connection', function(socket) {
+io.on('connection', (socket) => {
+
+    // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
+    socket.on("connected", function(name) {
+        var msg = name + "が入室しました";
+        userHash[socket.id] = name;
+        io.sockets.emit("publish", { value: msg });
+    });
+
+
     socket.emit('news', { hello: 'world' });
     socket.on('my other event', function(data) {
         console.log(data);
@@ -46,12 +55,15 @@ app.post('/webhook/', line.validator.validateSignature(), async(req, res, next) 
 
     for (const event of req.body.events) {
 
+
+
+
         await line.client
             .replyMessage({
                 replyToken: event.replyToken,
                 messages: [{
                     type: 'text',
-                    text: event.message.text + '✋'
+                    text: JSON.stringify(event)
                 }]
             });
     }

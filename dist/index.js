@@ -4,6 +4,10 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
 var _getIterator2 = require('babel-runtime/core-js/get-iterator');
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
@@ -37,6 +41,14 @@ app.use(bodyParser.json({
 }));
 
 io.on('connection', function (socket) {
+
+    // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
+    socket.on("connected", function (name) {
+        var msg = name + "が入室しました";
+        userHash[socket.id] = name;
+        io.sockets.emit("publish", { value: msg });
+    });
+
     socket.emit('news', { hello: 'world' });
     socket.on('my other event', function (data) {
         console.log(data);
@@ -76,7 +88,7 @@ app.post('/webhook/', _nodeLineBotApi2.default.validator.validateSignature(), fu
                             replyToken: event.replyToken,
                             messages: [{
                                 type: 'text',
-                                text: event.message.text + '✋'
+                                text: (0, _stringify2.default)(event)
                             }]
                         });
 
