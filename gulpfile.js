@@ -1,13 +1,15 @@
-var gulp = require('gulp');
+const gulp = require('gulp');
 
-var babel = require("gulp-babel");
+const babel = require("gulp-babel");
 
+const plumber = require('gulp-plumber');
 
 var src_dir = 'src/*.js';
 
 
 gulp.task('default', () =>
     gulp.src(src_dir)
+    .pipe(plumber())
     .pipe(babel({
         plugins: ['transform-runtime']
     }))

@@ -1,8 +1,16 @@
 'use strict'
-const line = require('node-line-bot-api')
-const express = require('express')
+
 const bodyParser = require('body-parser')
-const app = express()
+
+import express from 'express';
+import line from 'node-line-bot-api';
+
+
+const app = express();
+
+
+
+
 
 // need raw buffer for signature validation
 app.use(bodyParser.json({
@@ -18,23 +26,24 @@ line.init({
     channelSecret: '1d360dcb6469254599ab19c5372e7f94'
 })
 
-app.post('/webhook/', line.validator.validateSignature(), (req, res, next) => {
-    // get content from request body
-    const promises = req.body.events.map(event => {
-        // reply message
-        return line.client
+app.post('/webhook/', line.validator.validateSignature(), async (req, res, next) => {
+
+
+    for (const event of req.body.events) {
+
+        await line.client
             .replyMessage({
                 replyToken: event.replyToken,
                 messages: [{
                     type: 'text',
-                    text: event.message.text
+                    text: event.message.text + '✋'
                 }]
-            })
-    })
-    Promise
-        .all(promises)
-        .then(() => res.json({ success: true }))
-})
+            });
+    }
+
+
+    res.json({ success: true });
+});
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('Example app listening on port 3000!')
