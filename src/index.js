@@ -20,23 +20,26 @@ app.use(bodyParser.json({
     }
 }))
 
-
-
+// ゲームのクライアント
+// 複数のクライアントがある場合、最後に開かれたクライアントを使用する
+let mainSocket = null;
 
 io.on('connection', (socket) => {
 
-    // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
-    socket.on("connected", function(name) {
-        var msg = name + "が入室しました";
-        userHash[socket.id] = name;
-        io.sockets.emit("publish", { value: msg });
+    mainSocket = socket;
+
+    socket.on('disconnect', () => {
+
+        if (mainSocket === socket) socket = null;
+
     });
 
-
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function(data) {
-        console.log(data);
-    });
+    /*
+        socket.emit('news', { hello: 'world' });
+        socket.on('my other event', function(data) {
+            console.log(data);
+        });
+        */
 });
 
 
@@ -52,24 +55,38 @@ line.init({
 
 app.post('/webhook/', line.validator.validateSignature(), async(req, res, next) => {
 
+    // ゲーム画面が存在しない
+    if (!mainSocket) return res.json({ success: true });
 
     for (const event of req.body.events) {
 
+        if (event.message.type !== 'text') continue;
 
+        // ゲームに式を送る
+        mainSocket.emit('eval', event.message.text);
 
+        // 結果を待つ
+        const result = await new Promise((resolve) => {
 
-        await line.client
-            .replyMessage({
-                replyToken: event.replyToken,
-                messages: [{
-                    type: 'text',
-                    text: JSON.stringify(event)
-                }]
+            mainSocket.on('eval', (data) => {
+                // 結果を返す
+                resolve(data);
             });
+
+        });
+
+        await line.client.replyMessage({
+            replyToken: event.replyToken,
+            messages: [{
+                type: 'text',
+                text: result
+            }]
+        });
+
     }
 
-
     res.json({ success: true });
+
 });
 
 /*
