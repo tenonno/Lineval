@@ -5,15 +5,22 @@ const bodyParser = require('body-parser')
 import express from 'express';
 import line from 'node-line-bot-api';
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 const app = express();
 
 
-var io = require('socket.io')(app);
 
 console.log(io);
 
-
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+      
 // need raw buffer for signature validation
 app.use(bodyParser.json({
     verify(req, res, buf) {

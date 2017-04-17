@@ -24,11 +24,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var bodyParser = require('body-parser');
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 var app = (0, _express2.default)();
 
-var io = require('socket.io')(app);
-
 console.log(io);
+
+io.on('connection', function (socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data) {
+        console.log(data);
+    });
+});
 
 // need raw buffer for signature validation
 app.use(bodyParser.json({
