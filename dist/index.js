@@ -1,9 +1,5 @@
 'use strict';
 
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
 var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -11,6 +7,14 @@ var _promise2 = _interopRequireDefault(_promise);
 var _getIterator2 = require('babel-runtime/core-js/get-iterator');
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
 
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
@@ -68,64 +72,98 @@ _nodeLineBotApi2.default.init({
     channelSecret: '1d360dcb6469254599ab19c5372e7f94'
 });
 
-var imageTest = function imageTest(event) {
-
-    /*
-        line.client
-            .getMessageContent('xxxxxxxxxx' /* messageId  )
-            .then((content) => {
-                // handle content
-            })
-      */
-};
-
-app.post('/webhook/', _nodeLineBotApi2.default.validator.validateSignature(), function () {
-    var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(req, res, next) {
-        var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, event, result;
-
+var imageTest = function () {
+    var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(event, res) {
         return _regenerator2.default.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
+                        _context.next = 2;
+                        return _nodeLineBotApi2.default.client.replyMessage({
+                            replyToken: event.replyToken,
+                            messages: [{
+                                type: 'text',
+                                text: 'image: ' + (0, _stringify2.default)(event)
+                            }]
+                        });
+
+                    case 2:
+
+                        res.json({ success: true });
+
+                        /*
+                            line.client
+                                .getMessageContent('xxxxxxxxxx' /* messageId  )
+                                .then((content) => {
+                                    // handle content
+                                })
+                          */
+
+                    case 3:
+                    case 'end':
+                        return _context.stop();
+                }
+            }
+        }, _callee, undefined);
+    }));
+
+    return function imageTest(_x, _x2) {
+        return _ref.apply(this, arguments);
+    };
+}();
+
+app.post('/webhook/', _nodeLineBotApi2.default.validator.validateSignature(), function () {
+    var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(req, res, next) {
+        var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, event, result;
+
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+            while (1) {
+                switch (_context2.prev = _context2.next) {
+                    case 0:
                         if (mainSocket) {
-                            _context.next = 2;
+                            _context2.next = 2;
                             break;
                         }
 
-                        return _context.abrupt('return', res.json({ success: true }));
+                        return _context2.abrupt('return', res.json({ success: true }));
 
                     case 2:
                         _iteratorNormalCompletion = true;
                         _didIteratorError = false;
                         _iteratorError = undefined;
-                        _context.prev = 5;
+                        _context2.prev = 5;
                         _iterator = (0, _getIterator3.default)(req.body.events);
 
                     case 7:
                         if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                            _context.next = 21;
+                            _context2.next = 22;
                             break;
                         }
 
                         event = _step.value;
 
-
-                        if (event.message.type === 'image') imageTest(event);
-
-                        if (!(event.message.type !== 'text')) {
-                            _context.next = 12;
+                        if (!(event.message.type === 'image')) {
+                            _context2.next = 11;
                             break;
                         }
 
-                        return _context.abrupt('continue', 18);
+                        return _context2.abrupt('return', imageTest(event, res));
 
-                    case 12:
+                    case 11:
+                        if (!(event.message.type !== 'text')) {
+                            _context2.next = 13;
+                            break;
+                        }
+
+                        return _context2.abrupt('continue', 19);
+
+                    case 13:
 
                         // ゲームに式を送る
                         mainSocket.emit('eval', event.message.text);
 
                         // 結果を待つ
-                        _context.next = 15;
+                        _context2.next = 16;
                         return new _promise2.default(function (resolve) {
 
                             mainSocket.on('eval', function (data) {
@@ -134,9 +172,9 @@ app.post('/webhook/', _nodeLineBotApi2.default.validator.validateSignature(), fu
                             });
                         });
 
-                    case 15:
-                        result = _context.sent;
-                        _context.next = 18;
+                    case 16:
+                        result = _context2.sent;
+                        _context2.next = 19;
                         return _nodeLineBotApi2.default.client.replyMessage({
                             replyToken: event.replyToken,
                             messages: [{
@@ -145,59 +183,59 @@ app.post('/webhook/', _nodeLineBotApi2.default.validator.validateSignature(), fu
                             }]
                         });
 
-                    case 18:
+                    case 19:
                         _iteratorNormalCompletion = true;
-                        _context.next = 7;
+                        _context2.next = 7;
                         break;
 
-                    case 21:
-                        _context.next = 27;
+                    case 22:
+                        _context2.next = 28;
                         break;
 
-                    case 23:
-                        _context.prev = 23;
-                        _context.t0 = _context['catch'](5);
+                    case 24:
+                        _context2.prev = 24;
+                        _context2.t0 = _context2['catch'](5);
                         _didIteratorError = true;
-                        _iteratorError = _context.t0;
+                        _iteratorError = _context2.t0;
 
-                    case 27:
-                        _context.prev = 27;
-                        _context.prev = 28;
+                    case 28:
+                        _context2.prev = 28;
+                        _context2.prev = 29;
 
                         if (!_iteratorNormalCompletion && _iterator.return) {
                             _iterator.return();
                         }
 
-                    case 30:
-                        _context.prev = 30;
+                    case 31:
+                        _context2.prev = 31;
 
                         if (!_didIteratorError) {
-                            _context.next = 33;
+                            _context2.next = 34;
                             break;
                         }
 
                         throw _iteratorError;
 
-                    case 33:
-                        return _context.finish(30);
-
                     case 34:
-                        return _context.finish(27);
+                        return _context2.finish(31);
 
                     case 35:
+                        return _context2.finish(28);
+
+                    case 36:
 
                         res.json({ success: true });
 
-                    case 36:
+                    case 37:
                     case 'end':
-                        return _context.stop();
+                        return _context2.stop();
                 }
             }
-        }, _callee, undefined, [[5, 23, 27, 35], [28,, 30, 34]]);
+        }, _callee2, undefined, [[5, 24, 28, 36], [29,, 31, 35]]);
     }));
 
-    return function (_x, _x2, _x3) {
-        return _ref.apply(this, arguments);
+    return function (_x3, _x4, _x5) {
+        return _ref2.apply(this, arguments);
     };
 }());
 
