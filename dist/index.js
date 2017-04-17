@@ -29,15 +29,6 @@ var app = (0, _express2.default)();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-server.listen(80);
-
-io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-        console.log(data);
-    });
-});
-
 // need raw buffer for signature validation
 app.use(bodyParser.json({
     verify: function verify(req, res, buf) {
@@ -140,4 +131,11 @@ app.post('/webhook/', _nodeLineBotApi2.default.validator.validateSignature(), fu
 
 app.listen(process.env.PORT || 3000, function () {
     console.log('Example app listening on port 3000!');
+});
+
+io.on('connection', function (socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data) {
+        console.log(data);
+    });
 });

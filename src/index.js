@@ -12,15 +12,6 @@ const io = require('socket.io')(server);
 
 
 
-server.listen(80);
-
-
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-});
 
 // need raw buffer for signature validation
 app.use(bodyParser.json({
@@ -57,4 +48,15 @@ app.post('/webhook/', line.validator.validateSignature(), async (req, res, next)
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('Example app listening on port 3000!')
-})
+});
+
+
+
+
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
