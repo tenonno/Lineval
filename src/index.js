@@ -1,7 +1,7 @@
 
 (async function() {
 
-    console.log(1);
+    console.log(11);
 
     await new Promise((resolve) => setTimeout(resolve, 3000));
 

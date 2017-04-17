@@ -20,7 +20,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
             switch (_context.prev = _context.next) {
                 case 0:
 
-                    console.log(1);
+                    console.log(11);
 
                     _context.next = 3;
                     return new _promise2.default(function (resolve) {
