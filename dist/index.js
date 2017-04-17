@@ -79,12 +79,13 @@ var imageTest = function () {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
-                        _context.next = 2;
+                        _context.prev = 0;
+                        _context.next = 3;
                         return _nodeLineBotApi2.default.client.getMessageContent(event.message.id);
 
-                    case 2:
+                    case 3:
                         content = _context.sent;
-                        _context.next = 5;
+                        _context.next = 6;
                         return _nodeLineBotApi2.default.client.replyMessage({
                             replyToken: event.replyToken,
                             messages: [{
@@ -93,24 +94,26 @@ var imageTest = function () {
                             }]
                         });
 
-                    case 5:
+                    case 6:
 
                         res.json({ success: true });
 
-                        /*
-                            line.client
-                                .getMessageContent('xxxxxxxxxx' /* messageId  )
-                                .then((content) => {
-                                    // handle content
-                                })
-                          */
+                        _context.next = 12;
+                        break;
 
-                    case 6:
+                    case 9:
+                        _context.prev = 9;
+                        _context.t0 = _context['catch'](0);
+
+
+                        console.log(_context.t0);
+
+                    case 12:
                     case 'end':
                         return _context.stop();
                 }
             }
-        }, _callee, undefined);
+        }, _callee, undefined, [[0, 9]]);
     }));
 
     return function imageTest(_x, _x2) {

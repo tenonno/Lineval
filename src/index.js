@@ -59,19 +59,30 @@ const imageTest = async(event, res) => {
 
 
 
-    const content = await line.client.getMessageContent(event.message.id);
+    try {
 
 
-    await line.client.replyMessage({
-        replyToken: event.replyToken,
-        messages: [{
-            type: 'text',
-            text: 'image: ' + JSON.stringify(content)
-        }]
-    });
+        const content = await line.client.getMessageContent(event.message.id);
 
 
-    res.json({ success: true });
+        await line.client.replyMessage({
+            replyToken: event.replyToken,
+            messages: [{
+                type: 'text',
+                text: 'image: ' + JSON.stringify(content)
+            }]
+        });
+
+
+        res.json({ success: true });
+
+
+    } catch (e) {
+
+        console.log(e);
+
+    }
+
 
     /*
         line.client
