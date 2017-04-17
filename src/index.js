@@ -11,8 +11,8 @@ var io = require('socket.io')(server);
 const app = express();
 
 
+server.listen(80);
 
-console.log(io);
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
@@ -20,7 +20,7 @@ io.on('connection', function (socket) {
     console.log(data);
   });
 });
-      
+
 // need raw buffer for signature validation
 app.use(bodyParser.json({
     verify(req, res, buf) {

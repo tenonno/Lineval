@@ -29,7 +29,7 @@ var io = require('socket.io')(server);
 
 var app = (0, _express2.default)();
 
-console.log(io);
+server.listen(80);
 
 io.on('connection', function (socket) {
     socket.emit('news', { hello: 'world' });
