@@ -20,6 +20,20 @@ app.use(bodyParser.json({
     }
 }))
 
+
+
+
+io.on('connection', function(socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function(data) {
+        console.log(data);
+    });
+});
+
+
+
+
+
 // init with auth
 line.init({
     accessToken: 'YvxY4DWjIekWDwr5VBIlkjCYecAV5F6JZmUxCgnDA1an2QlEAENe5E3EV9R+EdJpmaKTY0v2uILRv3WvkhdRBPoYMRJnYpRbBn284lJawJDD384dvmyl6phkyXAnsoa5g8Ru+XDxLMkRXtzxVYB29gdB04t89/1O/w1cDnyilFU=',
@@ -27,7 +41,7 @@ line.init({
     channelSecret: '1d360dcb6469254599ab19c5372e7f94'
 })
 
-app.post('/webhook/', line.validator.validateSignature(), async (req, res, next) => {
+app.post('/webhook/', line.validator.validateSignature(), async(req, res, next) => {
 
 
     for (const event of req.body.events) {
@@ -46,17 +60,12 @@ app.post('/webhook/', line.validator.validateSignature(), async (req, res, next)
     res.json({ success: true });
 });
 
+/*
 app.listen(process.env.PORT || 3000, () => {
     console.log('Example app listening on port 3000!')
 });
+*/
 
-
-
-
-
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+server.listen(process.env.PORT || 3000, function() {
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
